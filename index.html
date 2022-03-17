@@ -1,0 +1,94 @@
+<html>
+<html lang="ja"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Eel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>ランサーズ 案件検索ツール</h1>
+        
+        <div class="dropdown">
+            <!-- <span>
+              案件ジャンル
+            </span>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              カテゴリーを選択
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                <li><button class="dropdown-item" value="system">システム開発・運用</button></li>
+                <li><button class="dropdown-item" value="web">Web制作・Webデザイン</button></li>
+                <li><button class="dropdown-item" value="design">デザイン制作</button></li>
+            </ul> -->
+        </div>
+        <span>検索ワード</span>
+        <input type="text" class="form-control" id="search_domain">
+        <span>CSVファイル名</span>
+        <input type="text" class="form-control" id="csv_name">
+        
+        <!--検索ボタン onclickで「クリックされたら、指定の関数を実行」-->
+        <button type="button" class="btn btn-Primary mt-2" onclick=empty_alert()>検索</button>
+        
+        <!-- <div>
+            <textarea class="form-control" id="search_result" placeholder="ここに検索結果が表示されます" display:block></textarea>
+        </div> -->
+
+    </div>
+    
+    <script>
+        $(function(){
+            $('.dropdown-menu .dropdown-item').click(function(){
+                var visibleItem = $('.dropdown-toggle', $(this).closest('.dropdown'));
+                visibleItem.text($(this).attr('value'));
+            });
+        });
+
+        
+        function displayLoading(msg){
+            if( msg == undefined ){
+                msg = "";
+            }
+            // 画面表示メッセージ
+            var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+            // ローディング画像が表示されていない場合のみ出力
+            if($("#loading").length == 0){
+                $("body").append("<div id='loading'>" + dispMsg + "</div>");
+            }
+        }
+        
+        function removeLoading(){
+            $("#loading").remove();
+        }
+        
+        async function search_jobs(){
+            displayLoading("処理中 5～10分程度お待ちください")
+            let search_word = document.getElementById("search_domain").value
+            let csv_name = document.getElementById("csv_name").value
+            await eel. search_word(search_word,csv_name)();
+            removeLoading()
+        }
+        function empty_alert(){
+            if(document.getElementById("search_domain").value===""){
+                alert("検索ワードに文字を入力してください")
+            }
+            else if(document.getElementById("csv_name").value===""){
+                alert("CSVのファイル名を入力してください")
+            }
+            else {
+                search_jobs();
+            }
+        }
+    </script>
+    
+    <script type="text/javascript" src=./eel.js></script> 
+</body>
+</html>
